@@ -5,10 +5,12 @@
         <div class="list-item" v-for="(item, prop) in list" :key="prop">
           <span class="budget-commen">{{ item.comment }}</span>
           <span class="budget-value">{{ item.value }}</span>
-          <el-button type="danger" size="small">Delete</el-button>
+          <el-button type="danger" @click="deleteItem(item.id)"
+            >Delete</el-button
+          >
         </div>
       </template>
-      <el-alert v-else type="info" :title="emptyTytle"  :closable="false"/>
+      <el-alert v-else type="info" :title="emptyTytle" :closable="false" />
     </el-card>
   </div>
 </template>
@@ -24,7 +26,7 @@ export default {
       default: () => ({}),
     },
   },
-
+  emits: ['click'],
   setup(props) {
     let header = 'Budget List';
     let emptyTytle = 'List is empty';
@@ -32,14 +34,19 @@ export default {
       return Boolean(!Object.keys(props.list).length);
     };
 
+    const deleteItem = (id) => {
+      this.$emit('deleteItem', id);
+    };
+
     onMounted(() => {
-      console.log('App is created');
+      console.log();
     });
 
     return {
       header,
       isEmpty,
       emptyTytle,
+      deleteItem,
     };
   },
 };
