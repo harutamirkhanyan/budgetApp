@@ -5,7 +5,7 @@
         <div class="list-item" v-for="(item, prop) in list" :key="prop">
           <span class="budget-commen">{{ item.comment }}</span>
           <span class="budget-value">{{ item.value }}</span>
-          <el-button type="danger" @click="deleteItem(item.id)"
+          <el-button type="danger" @click="$emit('deleteItem', item.id, list)"
             >Delete</el-button
           >
         </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 export default {
   name: 'BudgetList',
   props: {
@@ -26,27 +26,20 @@ export default {
       default: () => ({}),
     },
   },
-  emits: ['click'],
+  emits: ['deleteItem'],
   setup(props) {
-    let header = 'Budget List';
-    let emptyTytle = 'List is empty';
+    let header = ref('Budget List');
+    let emptyTytle = ref('List is empty')
     const isEmpty = () => {
       return Boolean(!Object.keys(props.list).length);
     };
 
-    const deleteItem = (id) => {
-      this.$emit('deleteItem', id);
-    };
-
-    onMounted(() => {
-      console.log();
-    });
+    onMounted(() => {});
 
     return {
       header,
       isEmpty,
       emptyTytle,
-      deleteItem,
     };
   },
 };
