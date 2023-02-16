@@ -1,4 +1,5 @@
 <template>
+  <budget-form @submitForm="formSubmit"></budget-form>
   <total-balance :total="totalBalance()"></total-balance>
   <budget-list :list="list" @deleteItem="onDelete"></budget-list>
 </template>
@@ -6,11 +7,16 @@
 <script>
 import TotalBalance from '@/components/TotalBalance.vue';
 import BudgetList from '@/components/BudgetList.vue';
+import BudgetForm from '@/components/BudgetForm.vue';
 import { ref } from 'vue';
 export default {
   name: 'App',
   emits: ['deleteItem'],
-  components: { BudgetList, TotalBalance },
+  components: {
+    BudgetList,
+    TotalBalance,
+    BudgetForm,
+  },
   setup() {
     let list = ref([
       {
@@ -33,6 +39,15 @@ export default {
         0
       );
     };
+
+    const formSubmit = (data) => {
+      const newItem = {
+        ...data,
+        id: new Date(),
+      };
+      list.value.push(newItem);
+    };
+
     const onDelete = (id, lis) => {
       list.value = lis.filter((item) => item.id !== id);
     };
@@ -41,6 +56,7 @@ export default {
       list,
       totalBalance,
       onDelete,
+      formSubmit,
     };
   },
 };
